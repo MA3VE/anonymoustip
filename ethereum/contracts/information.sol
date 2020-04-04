@@ -1,23 +1,32 @@
 pragma solidity >=0.5.0 <0.7.0;
 
 
-contract Page {
-    string public userName;
-    address payable creator;
-    address[] public posts;
+contract Factory {
+    mapping(address => address) public pageAddress;
+    mapping(address => address payable) public creatorAddress;
 
-    constructor(string memory _userName) public {
-        creator = msg.sender;
-        userName = _userName;
+    function createPage() public {
+        pageAddress[msg.sender] = address(new Page());
+        creatorAddress[pageAddress[msg.sender]] = msg.sender;
+    }
+}
+
+
+contract Page {
+    address payable public creator;
+    address[] public posts;
+    Factory factory;
+
+    constructor() public {
+        factory = Factory(msg.sender);
     }
 
     modifier restricted() {
+        if (creator == 0x0000000000000000000000000000000000000000) {
+            creator = factory.creatorAddress(address(this));
+        }
         require(msg.sender == creator, "You are not the creator of this page");
         _;
-    }
-
-    function changeUserName(string memory _userName) public restricted {
-        userName = _userName;
     }
 
     function getPosts() public view returns (address[] memory) {
@@ -28,21 +37,23 @@ contract Page {
         public
         restricted
     {
-        address newPost = address(new Post(_info, _changeable, creator));
-        posts.push(newPost);
+        posts.push(address(new Post(_info, _changeable)));
+    }
+
+    function deletePage() public restricted {
+        selfdestruct(creator);
     }
 }
 
 
 contract Post {
-    address payable public creator;
     bool public changeable;
     string public info;
+    address payable public creator;
 
-    constructor(string memory _info, bool _changeable, address payable _creator)
-        public
-    {
-        creator = _creator;
+    constructor(string memory _info, bool _changeable) public {
+        Page page = Page(msg.sender);
+        creator = page.creator();
         info = _info;
         changeable = _changeable;
     }
