@@ -67,7 +67,7 @@ app.patch("/info/:address/incLike", (req, res) => {
     const address = req.params.address;
     Info.findOneAndUpdate({ address }, { $inc: { likes: 1 } }, (err, data) => {
         if (err) return res.json(err);
-        console.log(data);
+        // console.log(data);
     });
     return res.status(200);
 });
@@ -76,9 +76,80 @@ app.patch("/info/:address/decLike", (req, res) => {
     const address = req.params.address;
     Info.findOneAndUpdate({ address }, { $inc: { likes: -1 } }, (err, data) => {
         if (err) return res.json(err);
-        console.log(data);
     });
     return res.status(200);
+});
+
+app.patch("/info/:address/incDisLike", (req, res) => {
+    const address = req.params.address;
+    Info.findOneAndUpdate(
+        { address },
+        { $inc: { dislikes: 1 } },
+        (err, data) => {
+            if (err) return res.json(err);
+        }
+    );
+    return res.status(200);
+});
+
+app.patch("/info/:address/decDisLike", (req, res) => {
+    const address = req.params.address;
+    Info.findOneAndUpdate(
+        { address },
+        { $inc: { dislikes: -1 } },
+        (err, data) => {
+            if (err) return res.json(err);
+        }
+    );
+    return res.status(200);
+});
+
+app.patch("/page/:address/incFollowers", (req, res) => {
+    const address = req.params.address;
+    Info.findOneAndUpdate(
+        { address },
+        { $inc: { followers: 1 } },
+        (err, data) => {
+            if (err) return res.json(err);
+        }
+    );
+    return res.status(200);
+});
+
+app.patch("/page/:address/decFollowers", (req, res) => {
+    const address = req.params.address;
+    Info.findOneAndUpdate(
+        { address },
+        { $inc: { followers: -1 } },
+        (err, data) => {
+            if (err) return res.json(err);
+        }
+    );
+    return res.status(200);
+});
+
+app.patch("/addFollowers/:address/:following", (req, res) => {
+    const { address, following } = req.params;
+    Page.findOneAndUpdate(
+        { address },
+        { $push: { following } },
+        { new: true, upsert: true },
+        function (err, data) {
+            if (err) res.send("err");
+            // console.log(data);
+        }
+    );
+});
+
+app.get("/followers/:address", async (req, res) => {
+    const { address } = req.params;
+    try {
+        page = await Page.findOne({ address });
+        res.send(page.following);
+    } catch (error) {
+        res.send(err);
+    }
+    // console.log(page);
 });
 
 app.listen(5000, () => {

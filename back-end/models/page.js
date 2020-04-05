@@ -14,7 +14,10 @@ const pageSchema = mongoose.Schema({
         type: Number,
         default: 0,
     },
-    following: {},
+    following: {
+        type: [String],
+        default: undefined,
+    },
 });
 
 const Page = mongoose.model("Page", pageSchema);
