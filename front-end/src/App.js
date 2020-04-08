@@ -1,15 +1,16 @@
 import React, { Component } from "react";
-import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Profile from "./pages/Profile";
+import Search from "./pages/Search";
+import PageNotFound from "./pages/PageNotFound";
 import Layout from "./components/Layout";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Home from "./home.js";
-import Profile from "./profile.js";
-import Search from "./search.js";
-import Following from "./following";
+import Following from "./pages/Following";
 
 class App extends Component {
     // constructor(props) {
     //     super(props);
+    //     this.state = {  }
     // }
     render() {
         return (
@@ -17,15 +18,15 @@ class App extends Component {
                 <Router>
                     <Layout>
                         <Switch>
-                            <Route exact path="/" component={Home} />
-                            <Route exact path="/profile" component={Profile} />
-                            <Route exact path="/search" component={Search} />
+                            <Route path="/" exact component={Home} />
+                            <Route path="/Profile" exact component={Profile} />
+                            <Route path="/Search" exact component={Search} />
                             <Route
+                                path="/Following"
                                 exact
-                                path="/following"
                                 component={Following}
                             />
-                            <Route path="/" render={() => <div>404</div>} />
+                            <Route path="/" component={PageNotFound} />
                         </Switch>
                     </Layout>
                 </Router>

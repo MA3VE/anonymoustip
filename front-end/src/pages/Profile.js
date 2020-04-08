@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import Layout from "./components/Layout";
-
-class Home extends Component {
+class Layout extends Component {
     // constructor(props) {
     //     super(props);
     //     this.state = {  }
     // }
     render() {
-        return <h1>Home Page</h1>;
+        return <h1>profile page</h1>;
     }
 }
 
-export default Home;
+export default Layout;

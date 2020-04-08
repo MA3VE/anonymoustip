@@ -5,13 +5,16 @@ import Navbar from "./Navbar";
 class Layout extends Component {
     // constructor(props) {
     //     super(props);
-    //     // this.state = {  };
+    //     this.state = {  }
     // }
     render() {
         return (
             <React.Fragment>
                 <Navbar />
-                <Container>{this.props.children}</Container>
+                <Container>
+                    {this.props.children}
+                    {/* {console.log(this.props)} */}
+                </Container>
             </React.Fragment>
         );
     }
