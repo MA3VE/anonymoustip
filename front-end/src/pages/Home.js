@@ -13,55 +13,48 @@ class Home extends Component {
             ethloading: false,
         };
     }
-    loadWeb3() {
+
+    loadWeb3 = async () => {
         let web3;
+        let account;
         if (window.ethereum) {
             web3 = new Web3(window.ethereum);
             try {
-                window.ethereum.enable().then((account) => {
-                    this.setState({ account: account[0] });
-                    this.setState({ web3 });
+                const accounts = await window.ethereum.enable();
+                account = accounts[0];
+                this.setState({ account, web3 }, async () => {
+                    const factory = new web3.eth.Contract(
+                        factoryAbi,
+                        "0x6D978cc90fC1e45b1E58dD3Db7ee0ADA22Bf0AD2"
+                    );
+                    const pageAddress = await factory.methods
+                        .pageAddress(account)
+                        .call();
+                    this.setState({ pageAddress, factory });
                 });
             } catch (e) {
                 this.setState({ web3error: e });
             }
-        }
-        // Legacy DApp Browsers
-        else if (window.web3) {
+        } else if (window.web3) {
             web3 = new Web3(window.web3.currentProvider);
             this.setState({ web3 });
         }
-    }
-    componentWillMount() {
-        this.loadWeb3();
-    }
-    async loadData() {
-        this.setState({ ethloading: true });
-        const { web3, account } = this.state;
-        const factory = new web3.eth.Contract(
-            factoryAbi,
-            "0x40021847b4d1a32671f83145de3d94862ca266d5"
-        );
-        // console.log(factory);
-        const pageAddress = await factory.methods.pageAddress(account).call();
-        this.setState({ pageAddress });
-        this.setState({ ethloading: false });
-    }
-    render() {
-        if (this.state.web3error !== null) {
-            return <h6>{this.state.web3error}</h6>;
-        } else if (this.state.web3 === null) {
-            return <h6>not an ether browser</h6>;
-        } else {
-            this.loadData();
+    };
 
-            return this.state.pageAddress ===
-                "0x0000000000000000000000000000000000000000" ? (
-                <CreatePage />
-            ) : (
-                <h1>{this.state.account}</h1>
-            );
-        }
+    componentWillMount = async () => {
+        this.loadWeb3();
+    };
+
+    render() {
+        return this.state.pageAddress ===
+            "0x0000000000000000000000000000000000000000" ? (
+            <CreatePage
+                factory={this.state.factory}
+                account={this.state.account}
+            />
+        ) : (
+            <h1>{this.state.pageAddress}</h1>
+        );
     }
 }
 

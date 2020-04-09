@@ -6,7 +6,8 @@ contract Factory {
     mapping(address => address payable) public creatorAddress;
 
     function createPage() public {
-        pageAddress[msg.sender] = address(new Page());
+        address newAddress = address(new Page());
+        pageAddress[msg.sender] = newAddress;
         creatorAddress[pageAddress[msg.sender]] = msg.sender;
     }
 }
