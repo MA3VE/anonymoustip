@@ -17,7 +17,9 @@ class CreatePage extends Component {
         const txhinfo = await factory.methods
             .createPage()
             .send({ from: account });
-        const pageAddress = txhinfo.events.createdPage.returnValues._newAddress;
+        const pageAddress =
+            txhinfo.events.getPageAddress.returnValues._pageAddress;
+        console.log(pageAddress);
         try {
             const res = await axios.post("/page", {
                 address: pageAddress,

@@ -5,11 +5,11 @@ export const factoryAbi = [
             {
                 indexed: false,
                 internalType: "address",
-                name: "_newAddress",
+                name: "_pageAddress",
                 type: "address",
             },
         ],
-        name: "createdPage",
+        name: "getPageAddress",
         type: "event",
     },
     {

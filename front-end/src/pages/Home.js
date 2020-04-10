@@ -25,7 +25,7 @@ class Home extends Component {
                 this.setState({ account, web3 }, async () => {
                     const factory = new web3.eth.Contract(
                         factoryAbi,
-                        "0x6D978cc90fC1e45b1E58dD3Db7ee0ADA22Bf0AD2"
+                        "0x762972Ed2C834227Ecba2Abe99A24625b7282986"
                     );
                     const pageAddress = await factory.methods
                         .pageAddress(account)
