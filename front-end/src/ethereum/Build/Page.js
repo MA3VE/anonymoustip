@@ -1,5 +1,23 @@
 export const PageAbi = [
     {
+        inputs: [],
+        stateMutability: "nonpayable",
+        type: "constructor",
+    },
+    {
+        anonymous: false,
+        inputs: [
+            {
+                indexed: false,
+                internalType: "address",
+                name: "_postAddress",
+                type: "address",
+            },
+        ],
+        name: "getPostAddress",
+        type: "event",
+    },
+    {
         inputs: [
             {
                 internalType: "string",
@@ -19,18 +37,6 @@ export const PageAbi = [
     },
     {
         inputs: [],
-        name: "deletePage",
-        outputs: [],
-        stateMutability: "nonpayable",
-        type: "function",
-    },
-    {
-        inputs: [],
-        stateMutability: "nonpayable",
-        type: "constructor",
-    },
-    {
-        inputs: [],
         name: "creator",
         outputs: [
             {
@@ -40,6 +46,13 @@ export const PageAbi = [
             },
         ],
         stateMutability: "view",
+        type: "function",
+    },
+    {
+        inputs: [],
+        name: "deletePage",
+        outputs: [],
+        stateMutability: "nonpayable",
         type: "function",
     },
     {

@@ -4,11 +4,13 @@ pragma solidity >=0.5.0 <0.7.0;
 contract Factory {
     mapping(address => address) public pageAddress;
     mapping(address => address payable) public creatorAddress;
+    event getPageAddress(address _pageAddress);
 
     function createPage() public {
         address newAddress = address(new Page());
         pageAddress[msg.sender] = newAddress;
         creatorAddress[pageAddress[msg.sender]] = msg.sender;
+        emit getPageAddress(newAddress);
     }
 }
 

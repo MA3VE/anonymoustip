@@ -39,6 +39,7 @@ app.post("/info", (req, res) => {
     const info = new Info(req.body);
     info.save((err, data) => {
         if (err) return res.json(err);
+        res.json({ success: "true" });
         console.log(data);
     });
     return res.status(200);
@@ -48,6 +49,8 @@ app.post("/page", (req, res) => {
     const page = new Page(req.body);
     page.save((err, data) => {
         if (err) return res.json(err);
+        res.json({ success: "true" });
+
         console.log(data);
     });
     return res.status(200);
@@ -77,6 +80,8 @@ app.patch("/info/:address/incLike", (req, res) => {
     const address = req.params.address;
     Info.findOneAndUpdate({ address }, { $inc: { likes: 1 } }, (err, data) => {
         if (err) return res.json(err);
+        res.json({ success: "true" });
+
         console.log(data);
     });
     return res.status(200);
@@ -86,6 +91,8 @@ app.patch("/info/:address/decLike", (req, res) => {
     const address = req.params.address;
     Info.findOneAndUpdate({ address }, { $inc: { likes: -1 } }, (err, data) => {
         if (err) return res.json(err);
+        res.json({ success: "true" });
+
         console.log(data);
     });
     return res.status(200);
@@ -98,6 +105,8 @@ app.patch("/info/:address/incDisLike", (req, res) => {
         { $inc: { dislikes: 1 } },
         (err, data) => {
             if (err) return res.json(err);
+            res.json({ success: "true" });
+
             console.log(data);
         }
     );
@@ -111,6 +120,8 @@ app.patch("/info/:address/decDisLike", (req, res) => {
         { $inc: { dislikes: -1 } },
         (err, data) => {
             if (err) return res.json(err);
+            res.json({ success: "true" });
+
             console.log(data);
         }
     );
@@ -124,6 +135,8 @@ app.patch("/page/:address/incFollowers", (req, res) => {
         { $inc: { followers: 1 } },
         (err, data) => {
             if (err) return res.json(err);
+            res.json({ success: "true" });
+
             console.log(data);
         }
     );
@@ -137,6 +150,8 @@ app.patch("/page/:address/decFollowers", (req, res) => {
         { $inc: { followers: -1 } },
         (err, data) => {
             if (err) return res.json(err);
+            res.json({ success: "true" });
+
             console.log(data);
         }
     );
@@ -151,6 +166,8 @@ app.patch("/addFollowers/:address/:following", (req, res) => {
         { new: true, upsert: true },
         function (err, data) {
             if (err) res.send("err");
+            res.json({ success: "true" });
+
             console.log(data);
         }
     );
